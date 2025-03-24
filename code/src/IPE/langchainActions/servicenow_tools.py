@@ -121,7 +121,14 @@ class ServiceNowTools:
 
             These keywords can be used to search for relevant KB articles that may provide solutions or troubleshooting steps for the issue.
             """
-            
+            # response ="""**Incident Analysis:**
+            #     1. **Main issue:** Unable to access team file share
+            #     2. **Category/Impact:** File access issue, affecting team collaboration
+            #     3. **Key technical terms:** File share, team folder, personal folder
+
+            #     **Searchable keywords for KB article search:**
+
+            #     keywords: "file share access", "team folder access", "file share issue", "team file share problem", "access denied file share"""""
             response = self.analyzer.llm.invoke([HumanMessage(content=prompt)])
             logging.info(f"Analysis result: {response.content}")
             return f"Analysis complete: {response.content}"
@@ -144,10 +151,10 @@ class ServiceNowTools:
             for term in search_terms[1:]:
                 search_query += "^ORshort_descriptionLIKE" + term
 
-            url = f"https://dev306388.service-now.com/api/now/table/kb_knowledge"
+            url = f"https://dev306388.service-now.com/api/now/table/kb_template_known_error_article"
             params = {
                 'sysparm_query': search_query,
-                'sysparm_type': "kb_knowledge",
+                'sysparm_type': "kb_knowledge_base",
                 'sysparm_limit': '5',
                 'sysparm_suppress_cache_control': 'true'
             }
@@ -157,11 +164,13 @@ class ServiceNowTools:
             if articles and articles.get('result'):
                 kb_articles = []
                 for article in articles['result']:
-                    article_info = (
-                        f"\nKB Article:\n"
-                        f"Number: {article.get('number', 'N/A')}\n"
-                        f"Title: {article.get('short_description', 'N/A')}\n"
-                        f"Content: {article.get('text', 'N/A')[:200]}..."
+                    
+                    article_info = ( f"       \n"
+                        f"**<h4>KB Article</h4>**\n"
+                        f"**Number:** <p>{article.get('number', 'N/A')}<p>\n"
+                        f"**Title:** <p>{article.get('short_description', 'N/A')}</p>\n"
+                        f"**Cause:** {article.get('kb_cause', 'N/A')}\n"
+                        f"**WorkAround:** {article.get('kb_workaround', 'N/A')}"                                           
                     )
                     kb_articles.append(article_info)
                 return "KB articles found: " + "\n".join(kb_articles)

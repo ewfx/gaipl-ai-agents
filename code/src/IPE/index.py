@@ -59,7 +59,7 @@ def update_chat_history(role, content):
         
         # Display the message
         with st.chat_message(role):
-            st.write(content)
+            st.markdown(content,unsafe_allow_html=True)
 
 def display_chat_history():
     """Display all messages in chat history"""
