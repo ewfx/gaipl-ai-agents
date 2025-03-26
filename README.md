@@ -1,13 +1,11 @@
-# 🚀 Project Name
+# 🚀 Integrated Platform Evironment By AI Agents teams
 
 
 ## 📌 Table of Contents
 - [Introduction](#introduction)
 - [Demo](#demo)
-- [Inspiration](#inspiration)
 - [What It Does](#what-it-does)
 - [How We Built It](#how-we-built-it)
-- [Challenges We Faced](#challenges-we-faced)
 - [How to Run](#how-to-run)
 - [Tech Stack](#tech-stack)
 - [Team](#team)
@@ -15,47 +13,50 @@
 ---
 
 ## 🎯 Introduction
-A brief overview of your project and its purpose. Mention which problem statement are your attempting to solve. Keep it concise and engaging.
+To streamline operations and enhance efficiency, we have developed a versatile tool that eliminates the need for the team to search for multiple solutions. 
+This tool seamlessly integrates with various applications, including Incident Management systems and or our project management tools
 
 ## 🎥 Demo
 🔗 [Live Demo](#) (if applicable)  
-📹 [Video Demo](#) (if applicable)  
+📹 [Video Demo](https://github.com/ewfx/gaipl-ai-agents/blob/main/demo.webm) (if applicable)  
 🖼️ Screenshots:
 
-![Screenshot 1](link-to-image)
+https://github.com/ewfx/gaipl-ai-agents/tree/main/image%20assets
 
-## 💡 Inspiration
-What inspired you to create this project? Describe the problem you're solving.
 
 ## ⚙️ What It Does
-Explain the key features and functionalities of your project.
+The application integrates with ServiceNow tools to analyze issues, provide suggested workarounds from Knowledge Base (KB) articles, and execute user-defined instructions efficiently.
 
 ## 🛠️ How We Built It
-Briefly outline the technologies, frameworks, and tools used in development.
+Our application is built using LangChain and LangGraph, with Streamlit utilized for the frontend interface. The core functionality is developed in Python as the base programming language.
 
-## 🚧 Challenges We Faced
-Describe the major technical or non-technical challenges your team encountered.
 
 ## 🏃 How to Run
 1. Clone the repository  
    ```sh
-   git clone https://github.com/your-repo.git
+   git clone https://github.com/ewfx/gaipl-ai-agents
    ```
 2. Install dependencies  
    ```sh
-   npm install  # or pip install -r requirements.txt (for Python)
+   create the virtual environment using conda or python
+   conda create --name my_env_name python=3.11
+   conda activate my_env_name
+   pip install -r requirements.txt
    ```
 3. Run the project  
    ```sh
-   npm start  # or python app.py
+  launch.json already committed, just download python extension and run the application.
    ```
 
 ## 🏗️ Tech Stack
-- 🔹 Frontend: React / Vue / Angular
-- 🔹 Backend: Node.js / FastAPI / Django
-- 🔹 Database: PostgreSQL / Firebase
-- 🔹 Other: OpenAI API / Twilio / Stripe
-
+- 🔹 Streamlit
+- 🔹 python
+- 🔹 LangChain
+- 🔹 LangGraph
+- 🔹 LLama3 
 ## 👥 Team
-- **Your Name** - [GitHub](#) | [LinkedIn](#)
-- **Teammate 2** - [GitHub](#) | [LinkedIn](#)
+- **Phani Vijaya Aditya Mukkavilli** -
+--**Datta Sai Krishna Somesula**
+--**Subhajit Mondal**
+--**Prasanth Panda**
+--**GiriBabu Goli**
