@@ -45,18 +45,18 @@ Our application is built using LangChain and LangGraph, with Streamlit utilized 
    ```
 3. Run the project  
    ```sh
-  launch.json already committed, just download python extension and run the application.
+     launch.json already committed, just download python extension and run the application.
    ```
 
 ## 🏗️ Tech Stack
-- 🔹 Streamlit
-- 🔹 python
-- 🔹 LangChain
-- 🔹 LangGraph
-- 🔹 LLama3 
+   - 🔹 Streamlit
+   - 🔹 python
+   - 🔹 LangChain
+   - 🔹 LangGraph
+   - 🔹 LLama3 
 ## 👥 Team
-- **Phani Vijaya Aditya Mukkavilli** -
---**Datta Sai Krishna Somesula**
---**Subhajit Mondal**
---**Prasanth Panda**
---**GiriBabu Goli**
+   -- **Phani Vijaya Aditya Mukkavilli** -
+   --**Datta Sai Krishna Somesula**
+   --**Subhajit Mondal**
+   --**Prasanth Panda**
+   --**GiriBabu Goli**
