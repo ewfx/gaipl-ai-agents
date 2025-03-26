@@ -1,6 +1,7 @@
 import streamlit as st
 import logging
 from langchain_core.messages import SystemMessage, HumanMessage
+from IPE.Other_actions.file_action import FileOperationAgent
 from langchainActions.servicenow_tools import WorkflowManager
 
 logging.basicConfig(level=logging.INFO)
@@ -37,8 +38,11 @@ def process_user_input(user_input):
         if not st.session_state.workflow_manager:
             st.error("Workflow manager not initialized properly")
             return None
-
-        response = st.session_state.workflow_manager.invoke_chain(user_input)
+        if user_input.startswith("[run]:"):
+           file_operation_manager = FileOperationAgent()
+           response = file_operation_manager.process_command(user_input)
+        else:
+            response = st.session_state.workflow_manager.invoke_chain(user_input)
         
         # Handle the response
         if response:
@@ -69,7 +73,7 @@ def display_chat_history():
 
 def main():
     """Main application function"""
-    st.title("ServiceNow Assistant")
+    st.title("Integrated Platform Environment")
     
     # Initialize session state
     initialize_session_state()

@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 from langchain_core.tools import Tool, StructuredTool
 import logging
 import requests
+from createModels.model_actions import InputAnalyzer
 
 class ServiceNowAPI:
     def __init__(self):
@@ -54,8 +55,9 @@ class IncidentAnalyzer:
             max_tokens=1024
         )
 
-    def extract_keywords(self, analysis_string: str) -> str:
+    def extract_keywords(self, analysis_string) -> str:
         try:
+                       
             keywords_split = analysis_string.split('**Searchable keywords for KB article search:**')
             if len(keywords_split) > 1:
                 keywords_section = keywords_split[1].strip()
@@ -64,6 +66,8 @@ class IncidentAnalyzer:
                 keywords = keywords.strip('"')
                 logging.debug(f"Extracted keywords: {keywords}")
                 return keywords
+            else:
+                return analysis_string
         except Exception as e:
             logging.error(f"Error extracting keywords: {str(e)}")
             return ""
@@ -185,6 +189,7 @@ class ServiceNowTools:
 class WorkflowManager:
     def __init__(self):
         self.snow_tools = ServiceNowTools()
+        self.input_analyzer = InputAnalyzer()
         self.tools = [
             StructuredTool.from_function(
                 func=self.snow_tools.query_incident,
@@ -302,40 +307,88 @@ class WorkflowManager:
             )
         self.chain = workflow.compile()
         return self.chain
-
-    def invoke_chain(self,user_input):
+    
+    def invoke_chain(self, user_input: str) -> str:
         try:
-            incident_number = "INC0000059"
+            # Let LLM analyze the input
+            analysis = self.input_analyzer.analyze_input(user_input)
             
-            initial_state = {
-                "messages": [
-                    SystemMessage(content="Processing ServiceNow incident workflow."),
-                    HumanMessage(content=f"Process incident {incident_number}")
-                ]
-            }
-            
-            logging.info("Starting workflow execution...")
-            
-            result = self.chain.invoke(
-                initial_state,
-                {"recursion_limit": 100}
-            )
-            
-            print("\n=== Workflow Results ===")
-            for message in result["messages"]:
-                print(f"\n{message.type}: {message.content}")
+            if analysis["confidence"] < 0.7:
+                return "I'm not quite sure what you're asking for. Could you please rephrase your request?"
 
-            if isinstance(result, dict) and "messages" in result:
-                formatted_response = []
-                for message in result["messages"]:
-                    if hasattr(message, 'content'):
-                        formatted_response.append(message.content)
-                return "\n".join(formatted_response)
-        
-            return str(result)
+            if analysis["action_type"] == "incident":
+                if not self.chain:
+                    self.chain = self.create_workflow()
+
+                initial_state = {
+                    "messages": [
+                        SystemMessage(content="Processing ServiceNow incident workflow."),
+                        HumanMessage(content=f"Process incident {analysis['incident_number']}")
+                    ]
+                }
+                
+                result = self.chain.invoke(
+                    initial_state,
+                    {"recursion_limit": 100}
+                )
+                
+                if isinstance(result, dict) and "messages" in result:
+                    formatted_response = []
+                    for message in result["messages"]:
+                        if hasattr(message, 'content'):
+                            formatted_response.append(message.content)
+                    return "\n".join(formatted_response)
+
+            elif analysis["action_type"] == "kb_search":
+                # Use the LLM-generated search keywords
+                return self.snow_tools.find_kb_articles(analysis["search_keywords"])
+
+            else:  # conversation
+                # Generate conversational response using LLM
+                prompt = f"""
+                Generate a friendly and professional response to this user message: {user_input}
+                Context: {analysis['conversation_context']}
+                Keep the response natural and helpful.
+                """
+                response = self.input_analyzer.llm.invoke([HumanMessage(content=prompt)])
+                return response.content
+
         except Exception as e:
-            logging.error("Workflow execution error", exc_info=True)
-            print(f"Error executing workflow: {str(e)}")
+            logging.error("Error processing request", exc_info=True)
+            return f"I encountered an error while processing your request: {str(e)}"
+    # def invoke_chain(self,user_input):
+    #     try:
+    #         #incident_number = "INC0000059"
+    #         analysis = self.input_analyzer.analyze_input(user_input)
+    #         initial_state = {
+    #             "messages": [
+    #                 SystemMessage(content="Processing ServiceNow incident workflow."),
+    #                 HumanMessage(content=f"Process incident {incident_number}")
+    #             ]
+    #         }
+            
+    #         logging.info("Starting workflow execution...")
+            
+    #         result = self.chain.invoke(
+    #             initial_state,
+    #             {"recursion_limit": 100}
+    #         )
+            
+    #         print("\n=== Workflow Results ===")
+    #         for message in result["messages"]:
+    #             print(f"\n{message.type}: {message.content}")
+
+    #         if isinstance(result, dict) and "messages" in result:
+    #             formatted_response = []
+    #             for message in result["messages"]:
+    #                 if hasattr(message, 'content'):
+    #                     formatted_response.append(message.content)
+    #             return "\n".join(formatted_response)
+        
+    #         return str(result)
+    #     except Exception as e:
+    #         logging.error("Workflow execution error", exc_info=True)
+    #         print(f"Error executing workflow: {str(e)}")
 
 # if __name__ == "__main__":
 #     try:
