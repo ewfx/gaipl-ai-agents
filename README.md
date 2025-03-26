@@ -13,8 +13,19 @@
 ---
 
 ## 🎯 Introduction
-To streamline operations and enhance efficiency, we have developed a versatile tool that eliminates the need for the team to search for multiple solutions. 
-This tool seamlessly integrates with various applications, including Incident Management systems and or our project management tools
+This project automates ServiceNow incident resolution using an AI-driven approach. The system consists of two key backend components:
+
+1. **Optimus Agent**: Pulls unassigned incidents from ServiceNow, determines the assignment group, and assigns the incident to the respective platform owner.
+2. **Vertical Agent**: An AI-powered agent with a knowledge base that assists in resolving incidents efficiently.
+
+## 🔧 Tech Stack
+- **Backend**: Python, Django
+- **Database**: MongoDB
+- **Containerization**: Docker
+- **API Testing**: Postman
+- **Cloud & Deployment**: Azure
+- **AI & NLP**: OpenAI (text-embedding-3-small)
+- **ITSM Integration**: ServiceNow
 
 ## 🎥 Demo
 🔗 [Live Demo](#) (if applicable)  
@@ -23,12 +34,39 @@ This tool seamlessly integrates with various applications, including Incident Ma
 
 https://github.com/ewfx/gaipl-ai-agents/tree/main/image%20assets
 
+## 🚀 Features
+✅ **Automated Incident Assignment** using ServiceNow API  
+✅ **AI-powered Resolution Engine** with automation capabilities  
+✅ **Chatbot Assistance** for logs, metrics, and recommendations  
+✅ **Integration with Grafana** for real-time monitoring  
+✅ **Seamless Deployment with Docker & Azure**  
+
 
 ## ⚙️ What It Does
 The application integrates with ServiceNow tools to analyze issues, provide suggested workarounds from Knowledge Base (KB) articles, and execute user-defined instructions efficiently.
 
 ## 🛠️ How We Built It
 Our application is built using LangChain and LangGraph, with Streamlit utilized for the frontend interface. The core functionality is developed in Python as the base programming language.
+
+## 🛠 Implementation Details
+
+### 🔹 Incident Assignment Flow
+1. **Data Retrieval**:
+   - The **Optimus Agent** fetches all unassigned incidents from ServiceNow.
+   - It checks the **assignment group** and assigns the incident to the **platform owner**.
+
+2. **AI-Driven Assistance**:
+   - The **Vertical Agent** receives the incident and checks for possible automation.
+   - If automation is available, the incident is auto-resolved.
+   - If no automation exists, the agent searches the **knowledge base** (logs, dashboards, past incidents, and knowledge articles).
+
+3. **Support Engineer Interaction**:
+   - If further action is required, a support engineer can interact with the AI chatbot.
+   - The chatbot provides recommendations, retrieves logs for specific time ranges, and allows document uploads for better context.
+   - The support engineer can also fetch **logs, metrics, and tracing information** directly within the chat.
+
+4. **Incident Resolution**:
+   - The engineer finds the resolution and **closes the incident from the UI itself**.
 
 
 ## 🏃 How to Run
