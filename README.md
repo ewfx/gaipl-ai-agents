@@ -53,7 +53,9 @@ Our application is built using LangChain and LangGraph, with Streamlit utilized 
    - 🔹 python
    - 🔹 LangChain
    - 🔹 LangGraph
-   - 🔹 LLama3 
+   - 🔹 LLama3
+     ![image](https://github.com/user-attachments/assets/e7845c95-e9b5-4469-9b51-3a1a9f5b12cf)
+
 ## 👥 Team
    -- **Phani Vijaya Aditya Mukkavilli** -
    --**Datta Sai Krishna Somesula**
